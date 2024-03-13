@@ -9,11 +9,11 @@ def read_file(nazwa, tab1, tab2):
 
         return ilosc
 
-def interpolacja_newtona(ilosc, xi, fxi, punkt, wspolczynnik_b):
+def interpolacja_netwona(xi, fxi, ilosc, punkt, wspolczynnik_b):
+    wspolczynnik_b.append(fxi[0])
+
     wspolczynnik_p = []
     wspolczynnik_p.append(1)
-
-    wspolczynnik_b.append(fxi[0])
 
     for h in range(1, ilosc):
         b_k = 0
@@ -21,7 +21,7 @@ def interpolacja_newtona(ilosc, xi, fxi, punkt, wspolczynnik_b):
             licznik = fxi[i]
             mianownik = 1
             for j in range(0, h+1):
-                if i != j:
+                if i!=j:
                     mianownik *= (xi[i]-xi[j])
 
             b_k += (licznik/mianownik)
@@ -36,25 +36,29 @@ def interpolacja_newtona(ilosc, xi, fxi, punkt, wspolczynnik_b):
         wspolczynnik_p.append(p_k)
 
     wynik = 0
-    for i in range(0, ilosc):
-        wynik += wspolczynnik_p[i]*wspolczynnik_b[i]
+    for h in range(0, ilosc):
+        wynik += wspolczynnik_p[h]*wspolczynnik_b[h]
 
     return wynik
+
+
+
 
 def main():
     xi = []
     fxi = []
-    ilosc = read_file("MN_02.txt", xi, fxi)
-    print(f"Liczba wezlow interpolacji wynosi {ilosc}")
-    print(f"Wezly interpolacji: {xi}")
-    print(f"Wartosci funkcji w wezlach: {fxi}")
-    punkt = float(input("Podaj wartosc punktu do obliczen: "))
-    b_k = []
-    wynik = interpolacja_newtona(ilosc, xi, fxi, punkt, b_k)
-    print(f"Wartosc funkcji dla danego punktu: {wynik}")
-    print(f"Wspolczynniki wielomianu Newtona: {b_k}")
+    wspolczynnik_b = []
+    ilosc = read_file("MN_in_2.txt", xi, fxi)
+    print(f"Liczba węzłów to: {ilosc}")
+    print(f"Węzły interpolacji: {xi}")
+    print(f"Wartosci w wezlach: {fxi}")
+    punkt = float(input("Podaj punkt: "))
+    wynik = interpolacja_netwona(xi, fxi, ilosc, punkt, wspolczynnik_b)
+    print(f"Wynik: {wynik}")
+    print(f"Wspolczynniki b: {wspolczynnik_b}")
 
 
 
-if __name__ == "__main__":
+
+if __name__ == '__main__':
     main()
